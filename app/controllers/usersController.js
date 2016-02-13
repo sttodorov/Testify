@@ -11,7 +11,6 @@
     },
     postRegister: function(req, res, next) {
         var userData = req.body;
-        
         if(userData.username.length <6)
         {
             req.session.error = 'Username too short. Min 6 chars!';
@@ -42,8 +41,7 @@
             res.redirect('/register');
             return;
         }
-        // TODO: if it is needed
-        //if(userData.email)
+        if(!!userData.email && userData.email)
 
         userData.salt = encryption.generateSalt();
         userData.hashPass = encryption.generateHashedPassword(userData.salt, userData.password);

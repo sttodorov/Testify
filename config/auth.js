@@ -14,7 +14,6 @@ module.exports = {
                 res.redirect('/');
             })
         });
-
         auth(req, res, next);
     },
     logout: function(req, res, next) {
