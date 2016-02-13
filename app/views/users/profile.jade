@@ -1,0 +1,15 @@
+extends ../shared/layout
+block main-content
+	h1 #{currentUser.firstName} #{currentUser.lastName}
+	hr
+
+	div.navbar-collapse.collapse.navbar-responsive-collapse
+		ul.nav.navbar-nav
+			li.editUserButtion
+				a.btn.btn-primary(href="/password") Change password
+
+	br
+	ul
+		li Username: #{currentUser.username}
+		li Email: #{currentUser.emailAddress}
+		li Average test score:#{avgScore}
