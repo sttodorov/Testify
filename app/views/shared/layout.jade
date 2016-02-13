@@ -1,0 +1,45 @@
+doctype
+html
+    head
+        title Test system
+        link(rel="stylesheet" href="/css/bootstrap.css")
+    body
+        header.nav
+        .container
+            .navbar-header
+                a.navbar-brand(href="/") Testify
+            .navbar-collapse.collapse
+                ul.nav.navbar-nav
+                    li
+                        a(href="/") Home
+                    if (currentUser)
+                        li
+                            a(href="/profile") #{currentUser.username}
+                        li
+                            a(href="/events") Host Test
+                        li
+                            a(href="/eventsPast") Past Tests
+                        li
+                            a(href="/eventsCreate") Open Tests
+                        li
+                            a(href="/logout") Logout
+                    else
+                        li
+                            a(href="/register") Register
+                        li
+                            a(href="/login") Login
+
+        .container
+            if (errorMessage)
+                .alert.alert-danger #{errorMessage}
+        .container
+            if (successMessage)
+                .alert.alert-success #{successMessage}
+
+            block main-content
+
+        footer
+            p.text-center
+                | &copy; Test system | sttodorov 2016
+
+        include scripts

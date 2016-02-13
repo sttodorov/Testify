@@ -1,0 +1,6 @@
+extends layout
+
+block main-content
+  h1= "This is an ERROR! " + message
+  h2= error.status
+  pre #{error.stack}

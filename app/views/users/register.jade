@@ -1,0 +1,25 @@
+block main-content
+    form(method="post" enctype="multipart/form-data" id="form-register")
+        label(for="username") Username
+        input(id="username" class="form-control" type="text" name="username" placeholder="Username" required="required")
+        br
+        label(for="password") Password
+        input(id="password" class="form-control" type="password" name="password" placeholder="Password" required="required")
+        br
+        label(for="confirm-password") Confirm Password
+        input(id="confirm-password" class="form-control" type="password" name="confirmPassword" placeholder="Confirm password" required="required")
+        br
+        label(for="firstName") First Name
+        input(id="firstName" class="form-control" type="text" name="firstName" placeholder="First Name" required="required")
+        br
+        label(for="lastName") Last Name
+        input(id="lastName" class="form-control" type="text" name="lastName" placeholder="Last Name" required="required")
+        br
+        label(for="age") Phone Number
+        input(id="age" class="form-control" type="number" name="phoneNumber" placeholder="Your age" min="3" max="99")
+        br
+        label(for="emailAddress") Email
+        input(id="emailAddress" class="form-control" type="emmail" name="emailAddress" placeholder="Email Address")
+        
+        input(type="submit" class="btn btn-lg" value="Register")
+        br
