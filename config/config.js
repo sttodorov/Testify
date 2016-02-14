@@ -9,7 +9,7 @@ var config = {
       name: 'express'
     },
     port: 3000,
-    db: 'mongodb://localhost/express-development'
+    db: 'mongodb://localhost/testifyDB'
   },
 
   test: {

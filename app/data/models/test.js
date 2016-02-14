@@ -7,9 +7,9 @@ module.exports.init = function() {
 
     var TestSchema = new Schema({
     title: String,
-    host: User.schema,
-    participantsIds: {type: mongoose.Schema.Types.ObjectId, default:[]},
-    questions: {type:[Question], default:[]}
+    host: {type: mongoose.Schema.Types.ObjectId, required: true},
+    participantsIds: {type: [mongoose.Schema.Types.ObjectId], default:[]},
+    questions: {type:[Question.schema], default:[]}
     });
 
     TestSchema.virtual('dateCreated')

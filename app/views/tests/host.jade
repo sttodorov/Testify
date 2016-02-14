@@ -1,3 +1,23 @@
 extends ../shared/layout
 block main-content
 	h1 Host new test
+	form(method="post" id="host-test")
+		label(for="title") Test title
+		input(id="title" class="form-control" type="text" name="title" placeholder="Test title" required="required")
+		br
+		div.panel.panel-primary(id="question-1")
+			div.panel-heading
+				input.title.form-control(id="title-question-1" name="title-question-1" placeholder="Question 1"  required="required")
+			div.panel-body
+				input(name="correct-question-1", required="required"  type="radio" value="1")
+				input.form-control(id="option-1" name="option-question-1" type="text" placeholder="Option-1"  required="required")
+				<br>
+				button(id="add-option-1" class="btn btn-success" type="button") Add option
+				button(id="delete-option-1" class="btn btn-warning"  type="button") Remove option
+				button(id="delete-question-1" class="btn btn-danger pull-right"  type="button") Remove question
+		button(id="add-question" class="btn btn-success btn-lg pull-right"  type="button") Add Question
+		input(type="submit" id="submitButton" class="btn btn-lg pull-left" value="Publihs Test")
+		br
+
+block page-scripts
+	script(src="js/host.js" type="text/javascript")

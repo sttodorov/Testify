@@ -5,7 +5,7 @@ module.exports.init = function() {
 
     var QuestionSchema = new Schema({
     title: String,
-    Answers: [{title:String}],
+    Answers: {type:[String]},
     CorrectAnswer: String
     });
 

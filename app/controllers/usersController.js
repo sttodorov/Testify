@@ -42,8 +42,6 @@
 			res.redirect('/register');
 			return;
 		}
-		if(!!userData.email && userData.email)
-
 		userData.salt = encryption.generateSalt();
 		userData.hashPass = encryption.generateHashedPassword(userData.salt, userData.password);
 

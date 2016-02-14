@@ -13,6 +13,9 @@ module.exports = function(app) {
 	app.get('/password', auth.isAuthenticated, controllers.users.getPassword);
 	app.post('/password', auth.isAuthenticated, controllers.users.postPassword);
 
+	app.get('/hostTest', auth.isAuthenticated, controllers.tests.getHostTest);
+	app.post('/hostTest', auth.isAuthenticated, controllers.tests.postHostTest);
+
 	app.get('/', function(req, res) {
 		res.render('index');
 	});
