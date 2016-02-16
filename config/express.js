@@ -7,7 +7,6 @@ var express = require('express'),
     session = require('express-session'),
     methodOverride = require('method-override'),
     passport = require('passport');
-// TODO: DO I need express session
 
 module.exports = function(app, config) {
     var env = process.env.NODE_ENV || 'development';
@@ -28,7 +27,7 @@ module.exports = function(app, config) {
     app.use(passport.session());
     app.use(express.static(config.root + '/public'));
     app.use(methodOverride());
-  
+
     app.use(function(req, res, next) {
         if (req.session.error) {
             var msg = req.session.error;

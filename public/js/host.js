@@ -12,13 +12,10 @@ $(document).ready(function() {
 			latestRadio = selectedQuestion.find('input[type="radio"]').last(),
 			newOption = latestInput.clone(),
 			newRadio = latestRadio.clone(),
-			latestItnputSplitted = latestInput.attr('id').split('-'),
-			index = +latestItnputSplitted[latestItnputSplitted.length-1]+1;
+			index = (+latestInput.attr('placeholder').split('-')[1]) + 1;
 
-		newOption.attr('id','option-' + index);
-		newOption.attr('placeholder', 'Option ' + index);
-
-		newRadio.attr('value',+ index);
+		newOption.attr('placeholder', 'Option-' +index);
+		newRadio.attr('value', +index);
 
 		newOption.insertAfter(latestInput);
 		$('<br>').insertBefore(newOption);
@@ -29,7 +26,7 @@ $(document).ready(function() {
 		var selectedQuestion = $('#question-'+ event.data.questionId),
 			options = selectedQuestion.find('div.panel-body input[type="text"]'),
 			brs = selectedQuestion.find('br');
-			if(options.length > 1){
+			if(options.length > 2){
 				options.last().remove();
 				selectedQuestion.find('div.panel-body input[type="radio"]').last().remove();
 				brs.last().remove();
@@ -73,4 +70,17 @@ $(document).ready(function() {
 	$('#delete-question-1').click({questionId: 1}, deleteQuestion );
 	$('#add-option-1').click({questionId:1},addOption);
 	$('#delete-option-1').click({questionId:1},deleteOption);
+
+	var now = new Date(),
+		day = ("0" + now.getDate()).slice(-2),
+		month = ("0" + (now.getMonth() + 1)).slice(-2),
+		today = now.getFullYear()+"-"+(month)+"-"+(day),
+		hours = ("0" + now.getHours()).slice(-2),
+		minutes = ("0" + now.getMinutes()).slice(-2),
+		time = hours+":"+minutes+":00";
+
+	$('#startDate').val(today);
+	$('#startTime').val(time);
+	$('#endDate').val(today);
+	$('#endTime').val(time);
 });

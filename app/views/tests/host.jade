@@ -5,13 +5,36 @@ block main-content
 		label(for="title") Test title
 		input(id="title" class="form-control" type="text" name="title" placeholder="Test title" required="required")
 		br
+
+		div.panel
+			div.row
+				div.col-lg-2
+					label(for="startDate") Start date and time
+			div.row
+				div.col-lg-3
+					input(id="startDate" class="form-control" type="date" name="startDate"  required="required")
+				div.col-lg-3
+					input(id="startTime" class="form-control" type="time" name="startTime"  required="required")
+			div.row
+				div.col-lg-2
+					label.pull-left(for="endDate") End date and time
+			div.row
+				div.col-lg-3
+					input.pull-right(id="endDate" class="form-control" type="date" name="endDate"  required="required")
+				div.col-lg-3
+					input.pull-right(id="endTime" class="form-control" type="time" name="endTime"  required="required")
+
 		div.panel.panel-primary(id="question-1")
 			div.panel-heading
 				input.title.form-control(id="title-question-1" name="title-question-1" placeholder="Question 1"  required="required")
 			div.panel-body
 				input(name="correct-question-1", required="required"  type="radio" value="1")
-				input.form-control(id="option-1" name="option-question-1" type="text" placeholder="Option-1"  required="required")
+				input.form-control(name="option-question-1" type="text" placeholder="Option-1"  required="required")
 				<br>
+				input(name="correct-question-1", required="required"  type="radio" value="2")
+				input.form-control(name="option-question-1" type="text" placeholder="Option-2"  required="required")
+				<br>
+
 				button(id="add-option-1" class="btn btn-success" type="button") Add option
 				button(id="delete-option-1" class="btn btn-warning"  type="button") Remove option
 				button(id="delete-question-1" class="btn btn-danger pull-right"  type="button") Remove question

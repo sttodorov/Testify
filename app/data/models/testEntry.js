@@ -7,7 +7,7 @@ module.exports.init = function() {
 		userId: {type:mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
 		testId: {type:mongoose.Schema.Types.ObjectId, ref: 'Test', required: true},
 		Answers: {type:[QuestionEnty.schema], default: []},
-		Score: {type: Number, required:true}
+		score: {type: Number, required:true}
 	});
 
 	TestEntrySchema.virtual('dateCreated')

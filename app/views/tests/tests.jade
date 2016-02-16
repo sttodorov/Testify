@@ -1,0 +1,28 @@
+extends ../shared/layout
+block main-content
+	h1 Open and future tests
+
+	div.row
+		div.col-lg-3 Title
+		div.col-lg-2 Start time
+		div.col-lg-2 End time
+		div.col-lg-1 Questions
+		div.col-lg-1 Join
+	br
+
+	each test in tests
+		div.row
+			div.col-lg-3 #{test.title}
+			div.col-lg-2 #{test.startTime.toLocaleString()}
+			div.col-lg-2 #{test.endTime.toLocaleString()}
+			div.col-lg-1 #{test.questions.length}
+			div.col-lg-2
+				if ~test.participantsIds.indexOf(userId)
+						a.btn.btn-primary( href="#{'\\tests\\'+test._id}") Go to Test
+				else
+					form(method="post")
+						input(type="hidden" name="testId" value=test._id)
+						button.btn.btn-success Join
+		br
+	br
+

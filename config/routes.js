@@ -16,6 +16,12 @@ module.exports = function(app) {
 	app.get('/hostTest', auth.isAuthenticated, controllers.tests.getHostTest);
 	app.post('/hostTest', auth.isAuthenticated, controllers.tests.postHostTest);
 
+	app.get('/tests', auth.isAuthenticated, controllers.tests.getOpenAndFutureTests);
+	app.post('/tests', auth.isAuthenticated, controllers.tests.joinTest);
+
+	app.get('/tests/:id', auth.isAuthenticated, controllers.tests.getTestSubmittion);
+	app.post('/tests/:id', auth.isAuthenticated, controllers.tests.postTestSubmittion);
+
 	app.get('/', function(req, res) {
 		res.render('index');
 	});

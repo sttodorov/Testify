@@ -1,0 +1,22 @@
+extends ../shared/layout
+block main-content
+	h1 #{test.title} - submittion
+	h2 Ending in: #{test.endTime.toLocaleString()}
+	br
+	br
+	form(method="post")
+		-var q = 1
+		each question in test.questions
+			div.panel.panel-default
+				div.panel-heading
+					span #{question.title}
+				div.panel-body
+					-var a = 1
+					each answer in question.Answers
+						.form-group.row
+							input.col-sm-1(name="answer-question-#{q}", required="required"  type="radio" value="#{a}")
+							.col-lg-10
+								span #{answer}
+						-a++
+				-q++
+		input.btn.btn-primary(type="submit" id="submitButton"  value="Submit Test")
