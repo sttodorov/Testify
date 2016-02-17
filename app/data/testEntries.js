@@ -7,6 +7,9 @@ module.exports = {
 	findAllByUserId: function(userId, callback) {
 		TestEntry.find({userId: userId}, callback);
 	},
+	findByUserIdAndTestId: function(ids, callback) {
+		TestEntry.find({userId: ids.userId, testId: ids.testId}, callback);
+	},
 	findLatestByUserId: function(userId, callback)
 	{
 		TestEntry.find({userId: userId})
@@ -17,14 +20,14 @@ module.exports = {
 	{
 		TestEntry.aggregate([
 		{
-			$match:{'userId': userId},
+			$match:{userId: userId},
 		},
 		{
 			$group:{
-					_id: '$_id',
+					_id: null,
 					avgRating: {$avg: '$score'}
 			}
 		}
-		]).exec(callback);
+		], callback);
 	}
 };

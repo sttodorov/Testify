@@ -1,7 +1,6 @@
 var Test = require('mongoose').model('Test');
 
-function getNowAsIso()
-{
+function getNowAsIso(){
 	return new Date().toISOString();
 }
 

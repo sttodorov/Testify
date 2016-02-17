@@ -8,7 +8,7 @@ module.exports.init = function() {
     var TestSchema = new Schema({
     title: String,
     host: {type: mongoose.Schema.Types.ObjectId, required: true},
-		participantsIds: {type: [mongoose.Schema.Types.ObjectId], default:[]},
+	participantsIds: {type: [mongoose.Schema.Types.ObjectId], default:[]},
     questions: {type:[Question.schema], default:[]},
 	startTime: { type : Date, default: Date.now },
 	endTime: { type : Date, default: Date.now },

@@ -13,10 +13,19 @@ block main-content
 				div.panel-body
 					-var a = 1
 					each answer in question.Answers
-						.form-group.row
-							input.col-sm-1(name="answer-question-#{q}", required="required"  type="radio" value="#{a}")
+						.form-group.row(style="#{!!submittion && answer == question.CorrectAnswer? 'background-color:#90EE90': ''}")
+							if !!submittion
+								if submittion.Answers[q-1].selectedAnswer == answer
+									input.col-sm-1(name="answer-question-#{q}", required="required"  type="radio" value="#{a}" disabled="disabled" checked="checked")
+								else
+									input.col-sm-1(name="answer-question-#{q}", required="required"  type="radio" value="#{a}" disabled="disabled")
+							else
+								input.col-sm-1(name="answer-question-#{q}", required="required"  type="radio" value="#{a}")
 							.col-lg-10
 								span #{answer}
 						-a++
 				-q++
-		input.btn.btn-primary(type="submit" id="submitButton"  value="Submit Test")
+		if !submittion
+			input.btn.btn-primary(type="submit" id="submitButton"  value="Submit Test")
+		else
+			h2.pull-right Total: #{submittion.score}%

@@ -17,6 +17,8 @@ module.exports = function(app) {
 	app.post('/hostTest', auth.isAuthenticated, controllers.tests.postHostTest);
 
 	app.get('/tests', auth.isAuthenticated, controllers.tests.getOpenAndFutureTests);
+	app.get('/pastTests', auth.isAuthenticated, controllers.tests.getPastTests);
+	app.post('/pastTests', auth.isAuthenticated, controllers.tests.joinTest);
 	app.post('/tests', auth.isAuthenticated, controllers.tests.joinTest);
 
 	app.get('/tests/:id', auth.isAuthenticated, controllers.tests.getTestSubmittion);

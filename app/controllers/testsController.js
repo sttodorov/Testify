@@ -24,35 +24,108 @@ module.exports = {
 				res.redirect('/tests');
 				return;
 			}
-			res.render(CONTROLLER_NAME + '/tests', {tests: data, userId: req.user._id});
+			res.render(CONTROLLER_NAME + '/tests', {title: "Open and future tests", tests: data, userId: req.user._id});
 		});
 	},
-	joinTest: function(req,res,next){
-		// TODO: Join test validations. Only in its open time.
-		tests.pushUser(req.body.testId,req.user._id,function(err,data){
+
+	getPastTests: function(req, res, next)
+	{
+		tests.pastTests(function(err, data){
 			if(err)
 			{
 				req.session.error = err;
 				res.redirect('/tests');
 				return;
 			}
-			res.redirect('/tests/'+req.body.testId);
+			res.render(CONTROLLER_NAME + '/tests', {title: "Past tests", tests: data, userId: req.user._id});
 		});
 	},
+	joinTest: function(req,res,next){
+		tests.findById(req.body.testId, function(err, test){
+			if(!test)
+			{
+				req.session.error = "Test not found";
+				res.redirect('/tests');
+				return;
+			}
+			if(err)
+			{
+				req.session.error = err;
+				res.redirect('/tests');
+				return;
+			}
+			// TODO: Should or not join when test hasn't started yet.
+			if(test.endTime < new Date())
+			{
+				req.session.error = "Cannot join ended test";
+				res.redirect('/tests');
+				return;
+			}
+
+			if(test.participantsIds.indexOf(req.user._id) > -1)
+			{
+				req.session.error = "You are already member of this test.";
+				res.redirect('/tests');
+				return;
+			}
+
+
+			tests.pushUser(req.body.testId,req.user._id,function(err,data){
+				if(err)
+				{
+					req.session.error = err;
+					res.redirect('/tests');
+					return;
+				}
+				res.redirect('/tests/'+req.body.testId);
+			});
+		});
+
+	},
 	getTestSubmittion: function(req,res,next){
-		// TODO: validate if user is participant, and test open time.
 		tests.findById(req.params.id, function(err,test){
 			if(err)
 			{
 				req.session.error = err;
-				res.redirect('/tests/'+req.params.id);
+				res.redirect('/tests');
 				return;
 			}
-			res.render(CONTROLLER_NAME + '/submittion', {test: test});
+			if(test.participantsIds.indexOf(req.user._id) < 0){
+				req.session.error = "You do not participate in this test";
+				res.redirect('/tests');
+				return;
+			}
+			if(test.startTime > new Date()){
+				req.session.error = "You still cannot go to test submittion. Test starts at: " + test.startTime.toLocaleString();
+				res.redirect('/tests');
+				return;
+			}
+
+			testEntries.findByUserIdAndTestId({userId:req.user._id , testId:test._id}, function(err, testEntriesFound){
+
+				if(!!testEntriesFound && testEntriesFound.length < 1)
+				{
+
+					if(test.endTime <= new Date())
+					{
+					req.session.error = "Cannot open closed test, if you haven't submit it.";
+					res.redirect('/tests');
+					return;
+					}
+
+					req.session.success = "Start test submittion";
+					res.render(CONTROLLER_NAME + '/submittion', {test: test});
+					return;
+				}
+
+				console.log("----------------Past test submittion is: ", testEntriesFound[testEntriesFound.length-1])
+				res.render(CONTROLLER_NAME + '/submittion', {test: test, submittion: testEntriesFound[testEntriesFound.length-1]});
+			});
+
 		});
 	},
 	postTestSubmittion: function(req,res,next){
-		// TODO: validate if user is participant, and test open time.
+		// TODO: validate if user is participant
 		var data = req.body;
 		var testSubmittion = {
 			userId: req.user._id,
@@ -69,6 +142,7 @@ module.exports = {
 				res.redirect('/tests/'+req.params.id);
 				return;
 			}
+			// BUG if there is a gap in ids some anwers will be ignored
 			while(data['answer-question-'+ i]){
 				var question = { questionId:"", selectedAnswer:""};
 
@@ -87,17 +161,34 @@ module.exports = {
 				testSubmittion.Answers.push(question);
 				i++;
 			}
-			testEntries.create( testSubmittion, function(err,data){
+
+			testEntries.findByUserIdAndTestId({userId:req.user._id , testId:test._id}, function(err, testEntriesFound){
 				if(err)
 				{
 					req.session.error = err;
 					res.redirect('/tests/'+req.params.id);
 					return;
 				}
-				// TODO: Update DB so that user can submit test only once
-				req.session.success = 'Test submitted sucessfully! Your Score is ' + testSubmittion.score + '%';
-				res.redirect("/tests");
-			});
+
+				if(!testEntriesFound || testEntriesFound.length > 0)
+				{
+					req.session.error = "User can submit test only once!";
+					res.redirect('/tests/'+req.params.id);
+					return;
+				}
+
+				testEntries.create( testSubmittion, function(err,data){
+					if(err)
+					{
+						req.session.error = err;
+						res.redirect('/tests/'+req.params.id);
+						return;
+					}
+					req.session.success = 'Test submitted sucessfully! Your Score is ' + testSubmittion.score + '%';
+					res.redirect("/tests");
+				});
+			})
+
 		});
 	},
 	postHostTest: function(req, res, next) {
@@ -118,6 +209,7 @@ module.exports = {
 			title: data.title,
 			host: req.user._id,
 			questions: [],
+			participantsIds: [],
 			startTime: new Date(data.startDate + ' ' + data.startTime).toISOString(),
 			endTime: new Date(data.endDate + ' ' + data.endTime).toISOString()
 		};
@@ -166,9 +258,7 @@ module.exports = {
 			i++;
 		}
 
-		console.log("Test is: ");
-		console.log(test);
-
+		test.participantsIds.push(req.user._id);
 		tests.create(test,function(err, test)
 		{
 			if(err)

@@ -65,9 +65,15 @@
 		res.render(CONTROLLER_NAME + '/login');
 	},
 	getProfile: function(req, res, next) {
-		testEntries.averageUserScore({creatorName : req.user.username},function(err, avgScore)
+		testEntries.averageUserScore(req.user._id, function(err, result)
 		{
-			res.render(CONTROLLER_NAME + '/profile', {avgScore: avgScore});
+			if(err)
+			{
+				req.session.error = err;
+				res.redirect('/password');
+				return;
+			}
+			res.render(CONTROLLER_NAME + '/profile', {avgScore: (!!result && result.length > 0) ? result[0].avgRating.toFixed(2) : 0});
 		});
 	},
 	getPassword: function(req, res, next) {
